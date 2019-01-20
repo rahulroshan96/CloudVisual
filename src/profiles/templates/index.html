@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block body %}
+<table class="table">
+    <tr>
+        <th align="left" class="bg-primary"> VM Name</th>
+        <th align="left" class="bg-primary"> VM Username</th>
+        <th align="left" class="bg-primary"> VM IP</th>
+        <th align="left" class="bg-primary"> VM Location</th>
+    </tr>
+    {% for vm in result.value %}
+    <tr>
+
+        <td align="left">{{vm.name}}</td>
+        <td align="left">{{vm.properties.osProfile.adminUsername}}</td>
+        <td align="left">{{vm.properties.networkProfile.networkInterfaces.0.id}}</td>
+        <td align="left">{{vm.location}}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}
