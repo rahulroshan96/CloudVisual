@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-
 from django.shortcuts import render
 from django.http import HttpResponse
 import requests
@@ -33,7 +32,7 @@ def get_token(request):
     creds.bearer_token = token
     creds.token_expire_on = result['expires_on']
     creds.save(update_fields=['bearer_token', 'token_expire_on'])
-    return token
+    return token, str(creds.subscription_id)
 
 def resource(self, res_name, res_type):
     return HttpResponse("<h1> Name is: "+res_name + ' and type is: '+ res_type+"</h1>")
@@ -69,8 +68,7 @@ def get_vm_details(vm, token, group=0 ):
     vm_data['result'] = data
     return vm_data
 
-
-def test(request):
+def az_graph(request):
 
     token, subscription_id = get_token(request)
     url_vm = 'https://management.azure.com/subscriptions/%s/resourceGroups/rahulr-resource-group/providers/Microsoft.Compute/virtualMachines?api-version=2018-06-01'%subscription_id
@@ -85,18 +83,18 @@ def test(request):
         data['result']['nodes'].extend(temp['result']['nodes'])
         data['result']['links'].extend(temp['result']['links'])
     data['result'] = jsonpickle.encode(data['result'])
-    return render(request, 'test.html', context=data)
+    return render(request, 'azure_graph.html', context=data)
 
 def index(request):
     return HttpResponse("Hello, world. You're at the polls index.")
 
 def dashboard(request):
-    token, subscription_id = get_token(request)
-    url_vm = 'https://management.azure.com/subscriptions/%s/resourceGroups/rahulr-resource-group/providers/Microsoft.Compute/virtualMachines?api-version=2018-06-01'%subscription_id
-    res = requests.get(url_vm, headers={'Authorization': token})
-    data = {
-        'result': json.loads(res.text)
-    }
-    return render(request, 'index.html', context=data)
+    return render(request, 'dashboard.html')
+
+def user(request):
+    return render(request, 'user.html')
+
+
+
 
 

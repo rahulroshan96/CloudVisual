@@ -20,12 +20,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'djangokey'
+SECRET_KEY = 'h&w0%y&!(zi3n=6pa)f8zzf4l@7-wuep)e=sw2*r_)68z@thze'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['10.140.8.226', 'localhost', '127.0.0.1']
 
 
 # Application definition
@@ -41,7 +41,6 @@ INSTALLED_APPS = [
     'account',
     'azure',
     'crispy_forms',
-
 ]
 
 MIDDLEWARE = [
