@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
 import requests
 import json
@@ -86,10 +86,13 @@ def az_graph(request):
     return render(request, 'azure_graph.html', context=data)
 
 def index(request):
-    return HttpResponse("Hello, world. You're at the polls index.")
+    return redirect('/account/login')
 
 def dashboard(request):
-    return render(request, 'dashboard.html')
+    if request.user.is_authenticated():
+        return render(request, 'dashboard.html')
+    else:
+        return redirect('/account/login')
 
 def user(request):
     return render(request, 'user.html')

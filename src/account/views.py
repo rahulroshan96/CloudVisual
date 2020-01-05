@@ -7,8 +7,7 @@ from django.contrib.auth.forms import UserCreationForm
 
 
 def index(request):
-    return HttpResponse('<h1>Welcome to Account page</h1>')
-
+    return redirect('/account/login')
 
 def register_user(request):
     if request.method == 'POST':
