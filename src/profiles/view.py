@@ -9,6 +9,7 @@ import jsonpickle
 import time
 from django.contrib.auth.models import User
 from account.models import Credentials
+from utils.youtube import get_videos_by_query
 
 
 def get_token(request):
@@ -84,6 +85,11 @@ def az_graph(request):
         data['result']['links'].extend(temp['result']['links'])
     data['result'] = jsonpickle.encode(data['result'])
     return render(request, 'azure_graph.html', context=data)
+
+def youtube(request):
+    result = get_videos_by_query()
+    data = {'results':result}
+    return render(request,'youtube.html', context=data)
 
 def index(request):
     return redirect('/account/login')
