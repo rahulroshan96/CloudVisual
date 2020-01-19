@@ -1,10 +1,5 @@
 import os
-
-import google.oauth2.credentials
-# from apiclient.discovery import build
 from googleapiclient.discovery import build
-from googleapiclient.errors import HttpError
-from google_auth_oauthlib.flow import InstalledAppFlow
 
 # The CLIENT_SECRETS_FILE variable specifies the name of a file that contains
 # the OAuth 2.0 information for this application, including its client_id and
@@ -19,26 +14,18 @@ API_VERSION = 'v3'
 
 
 def get_authenticated_service():
-    # import pdb
-    # pdb.set_trace()
-    # flow = InstalledAppFlow.from_client_secrets_file(CLIENT_SECRETS_FILE, SCOPES)
-    # credentials = flow.run_local_server()
-    # credentials = flow.run_console()
     api_key = str(os.environ['GOOGLEAPI'])
     return build(API_SERVICE_NAME, API_VERSION, developerKey=api_key)
-    # return build(API_SERVICE_NAME, API_VERSION,credentials=credentials)
 
 
-def get_videos_by_query():
+def get_videos_by_query(query):
     service = get_authenticated_service()
-    req = service.search().list(q='avenger', part='snippet', type='video', maxResults=50)
+    req = service.search().list(q=query, part='snippet', type='video', maxResults=50)
     result = req.execute()
     items = result['items']
     results = []
     for i in items:
         results.append('https://www.youtube.com/watch?v=%s' % i['id']['videoId'])
-        # results[i['snippet']['title']] = 'https://www.youtube.com/watch?v=%s' % i['id']['videoId']
-        # print 'https://www.youtube.com/watch?v=%s' % i['id']['videoId']
     return results
 
 

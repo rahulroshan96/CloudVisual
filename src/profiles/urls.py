@@ -7,6 +7,7 @@ urlpatterns = [
     url(r'^user$', view.user, name='user'),
     url(r'^azure$', view.az_graph, name='az_graph'),
     url(r'^youtube$', view.youtube, name='youtube'),
+    url(r'^example$', view.example, name='example'),
     url(r'^dashboard$', view.dashboard, name='dashboard'),
     url(r'^', view.index, name='index'),
 ]

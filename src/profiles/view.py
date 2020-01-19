@@ -10,6 +10,7 @@ import time
 from django.contrib.auth.models import User
 from account.models import Credentials
 from utils.youtube import get_videos_by_query
+from forms import UserInputForm
 
 
 def get_token(request):
@@ -87,9 +88,26 @@ def az_graph(request):
     return render(request, 'azure_graph.html', context=data)
 
 def youtube(request):
-    result = get_videos_by_query()
-    data = {'results':result}
-    return render(request,'youtube.html', context=data)
+    if request.method == 'POST':
+        form = UserInputForm(request.POST)
+        if form.is_valid():
+            xform = UserInputForm()
+            # import pdb
+            # pdb.set_trace()
+            result = get_videos_by_query(request.POST['user_input'])
+            data = {'results': result, 'form': xform}
+            return render(request, 'youtube.html', context=data)
+    else:
+        form = UserInputForm()
+        data = {'form':form}
+        return render(request,'youtube.html', context=data)
+
+def example(request):
+    if request.method == 'GET':
+        return render(request,'example.html')
+    else:
+        return render(request,'example.html')
+
 
 def index(request):
     return redirect('/account/login')
