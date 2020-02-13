@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
 import requests
 import json
@@ -10,6 +9,9 @@ import jsonpickle
 import time
 from django.contrib.auth.models import User
 from account.models import Credentials
+from utils.youtube import get_videos_by_query
+from forms import UserInputForm
+from django.contrib.auth.decorators import login_required
 
 
 def get_token(request):
@@ -33,7 +35,7 @@ def get_token(request):
     creds.bearer_token = token
     creds.token_expire_on = result['expires_on']
     creds.save(update_fields=['bearer_token', 'token_expire_on'])
-    return token
+    return token, str(creds.subscription_id)
 
 def resource(self, res_name, res_type):
     return HttpResponse("<h1> Name is: "+res_name + ' and type is: '+ res_type+"</h1>")
@@ -70,8 +72,7 @@ def get_vm_details(vm, token, group=0 ):
     return vm_data
 
 
-def test(request):
-
+def az_graph(request):
     token, subscription_id = get_token(request)
     url_vm = 'https://management.azure.com/subscriptions/%s/resourceGroups/rahulr-resource-group/providers/Microsoft.Compute/virtualMachines?api-version=2018-06-01'%subscription_id
     res = requests.get(url_vm, headers={'Authorization': token})
@@ -85,18 +86,45 @@ def test(request):
         data['result']['nodes'].extend(temp['result']['nodes'])
         data['result']['links'].extend(temp['result']['links'])
     data['result'] = jsonpickle.encode(data['result'])
-    return render(request, 'test.html', context=data)
+    return render(request, 'azure_graph.html', context=data)
+
+
+@login_required(login_url='account/login')
+def youtube(request):
+    if request.method == 'POST':
+        form = UserInputForm(request.POST)
+        if form.is_valid():
+            xform = UserInputForm()
+            # import pdb
+            # pdb.set_trace()
+            result = get_videos_by_query(request.POST['user_input'])
+            data = {'results': result, 'form': xform}
+            return render(request, 'youtube.html', context=data)
+    else:
+        form = UserInputForm()
+        data = {'form':form}
+        return render(request,'youtube.html', context=data)
+
+def example(request):
+    if request.method == 'GET':
+        return render(request,'example.html')
+    else:
+        return render(request,'example.html')
+
 
 def index(request):
-    return HttpResponse("Hello, world. You're at the polls index.")
+    return redirect('/account/login')
 
 def dashboard(request):
-    token, subscription_id = get_token(request)
-    url_vm = 'https://management.azure.com/subscriptions/%s/resourceGroups/rahulr-resource-group/providers/Microsoft.Compute/virtualMachines?api-version=2018-06-01'%subscription_id
-    res = requests.get(url_vm, headers={'Authorization': token})
-    data = {
-        'result': json.loads(res.text)
-    }
-    return render(request, 'index.html', context=data)
+    if request.user.is_authenticated():
+        return render(request, 'dashboard.html')
+    else:
+        return redirect('/account/login')
+
+def user(request):
+    return render(request, 'user.html')
+
+
+
 
 

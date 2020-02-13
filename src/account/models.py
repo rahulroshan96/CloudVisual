@@ -17,3 +17,5 @@ class Credentials(models.Model):
 
     def __str__(self):
         return self.credential_name
+
+
