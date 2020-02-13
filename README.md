@@ -7,6 +7,14 @@ CloudVisual is a Django and D3.js based webapp to visualialize Azure resource su
 
 <img src="https://i.imgur.com/PFmXh8h.png" alt="Commercial Photography">
 
+### SocialAuth Support:
+- Github
+- Twitter
+- Facebook
+- Reference - https://simpleisbetterthancomplex.com/tutorial/2016/10/24/how-to-add-social-login-to-django.html
+<img src="https://i.imgur.com/7xWtQSi.png" alt="Commercial Photography">
+
+
 ### License:
 The MIT License (MIT)
 

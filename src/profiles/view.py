@@ -11,6 +11,7 @@ from django.contrib.auth.models import User
 from account.models import Credentials
 from utils.youtube import get_videos_by_query
 from forms import UserInputForm
+from django.contrib.auth.decorators import login_required
 
 
 def get_token(request):
@@ -70,8 +71,8 @@ def get_vm_details(vm, token, group=0 ):
     vm_data['result'] = data
     return vm_data
 
-def az_graph(request):
 
+def az_graph(request):
     token, subscription_id = get_token(request)
     url_vm = 'https://management.azure.com/subscriptions/%s/resourceGroups/rahulr-resource-group/providers/Microsoft.Compute/virtualMachines?api-version=2018-06-01'%subscription_id
     res = requests.get(url_vm, headers={'Authorization': token})
@@ -87,6 +88,8 @@ def az_graph(request):
     data['result'] = jsonpickle.encode(data['result'])
     return render(request, 'azure_graph.html', context=data)
 
+
+@login_required(login_url='account/login')
 def youtube(request):
     if request.method == 'POST':
         form = UserInputForm(request.POST)

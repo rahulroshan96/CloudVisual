@@ -20,14 +20,28 @@
                         <input type="submit" class="btn btn-lg btn-success btn-block" value="Sign In">
 					</div>
 					<div class="col-xs-6 col-sm-6 col-md-6">
-						<a href="/account/register" class="btn btn-lg btn-primary btn-block">Register</a>
+						<a href="/account/register" class="btn btn-lg btn-danger btn-block">Register</a>
 					</div>
 				</div>
 			</fieldset>
 		</form>
 	</div>
 </div>
-
+	<div class="row" style="margin-top:20px">
+	<div class="col-xs-6 col-sm-6 col-md-6">
+		<a href="{% url 'social:begin' 'github' %}" class="btn btn-lg btn-dark btn-block">Login with GitHub</a><br>
+	</div>
+	</div>
+		<div class="row" style="margin-top:20px">
+	<div class="col-xs-6 col-sm-6 col-md-6">
+		<a href="{% url 'social:begin' 'twitter' %}" class="btn btn-lg btn-info btn-block">Login with Twitter</a><br>
+	</div>
+	</div>
+		<div class="row" style="margin-top:20px">
+	<div class="col-xs-6 col-sm-6 col-md-6">
+		<a href="{% url 'social:begin' 'facebook' %}" class="btn btn-lg btn-primary btn-block">Login with Facebook</a><br>
+	</div>
+	</div>
 </div>
 
 
