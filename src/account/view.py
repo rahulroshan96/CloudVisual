@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth.forms import UserCreationForm
-from forms import CredentialForm
+from .forms import CredentialForm
 from django.contrib.auth.models import User
 from social_django.models import UserSocialAuth
 

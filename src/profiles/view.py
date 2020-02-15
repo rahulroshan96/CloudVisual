@@ -9,8 +9,8 @@ import jsonpickle
 import time
 from django.contrib.auth.models import User
 from account.models import Credentials
-from utils.youtube import get_videos_by_query
-from forms import UserInputForm
+from .utils.youtube import get_videos_by_query
+from .forms import UserInputForm
 from django.contrib.auth.decorators import login_required
 
 
@@ -19,7 +19,7 @@ def get_token(request):
     creds = Credentials.objects.filter(user=user)[0]
     curr_time = int(time.time())
     if int(creds.token_expire_on) > curr_time:
-        print 'Fetching token from DB'
+        print('Fetching token from DB')
         return creds.bearer_token, str(creds.subscription_id)
     auth = {
         'tenant_id': str(creds.tenant_id),
@@ -116,7 +116,7 @@ def index(request):
     return redirect('/account/login')
 
 def dashboard(request):
-    if request.user.is_authenticated():
+    if request.user.is_authenticated:
         return render(request, 'dashboard.html')
     else:
         return redirect('/account/login')

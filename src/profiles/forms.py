@@ -1,5 +1,5 @@
 from django import forms
-from models import UserInputModel
+from .models import UserInputModel
 
 
 class UserInputForm(forms.ModelForm):

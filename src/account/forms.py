@@ -1,4 +1,4 @@
-from models import Credentials
+from .models import Credentials
 from django.forms.models import ModelForm
 
 
