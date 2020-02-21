@@ -95,8 +95,6 @@ def youtube(request):
         form = UserInputForm(request.POST)
         if form.is_valid():
             xform = UserInputForm()
-            # import pdb
-            # pdb.set_trace()
             result = get_videos_by_query(request.POST['user_input'])
             data = {'results': result, 'form': xform}
             return render(request, 'youtube.html', context=data)

@@ -11,6 +11,21 @@ from social_django.models import UserSocialAuth
 def index(request):
     return redirect('/account/login')
 
+from django.contrib.auth import logout
+
+def social_user(backend, uid, user=None, *args, **kwargs):
+    provider = backend.name
+    social = backend.strategy.storage.user.get_social_auth(provider, uid)
+    if social:
+        if user and social.user != user:
+            logout(backend.strategy.request)
+        elif not user:
+            user = social.user
+    return {'social': social,
+            'user': user,
+            'is_new': user is None,
+            'new_association': False}
+
 def register_user(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
